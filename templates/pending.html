@@ -9,10 +9,10 @@
 <body>
 
         <h1>Pending Links</h1>
-        <a href="#">Download ALL now!</a>
+        <a href={{ url_for('download_all') }}>Download ALL now!</a>
         <ul>
-            {% for link in pending_links %}
-            <li>{{link}} <a href="#">Download now!</a> <a href={{ url_for('delete', id=123) }}>Delete</a> </li>
+            {% for link in pending_urls %}
+            <li>{{link.url}} <a href={{ url_for('download', id=link.id) }}>Download now!</a> <a href={{ url_for('delete', id=link.id) }}>Delete</a> </li>
             {% endfor %}
         </ul>
 
