@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloader</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="shortcut icon" type="image/jpg" href="/images/racoon.jpg">
+</head>
+<body>
+    <div class="container">
+        <form action="url" method="post" class="inputURL">
+            <input type="text" name="url" class="url" placeholder="Paste your link here!." required="true">
+            <button type="submit" class="url">Submit!</button>
+        </form>
+        <a href={{ url_for('pending') }}>
+            <p>Pending Downloads</p>
+        </a>
+    </div>
+</body>
+</html>
