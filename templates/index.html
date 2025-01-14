@@ -11,6 +11,11 @@
     <div class="container">
         <form action="add_url" method="post" class="inputURL">
             <input type="text" name="url" class="url" placeholder="Paste your link here!." required="true">
+            <select name="format" required="true">
+                <option value="">Please select your format</option>
+                <option value="video">Video</option>
+                <option value="audio">Audio</option>
+            </select>
             <button type="submit" class="url">Submit!</button>
         </form>
         <a href={{ url_for('pending') }}>

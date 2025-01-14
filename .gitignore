@@ -3,3 +3,5 @@ files/*
 .idea
 __pycache__
 instance/*
+videos
+music
