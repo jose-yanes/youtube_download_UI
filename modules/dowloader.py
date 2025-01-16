@@ -28,20 +28,29 @@ def download_pending(pending_list):
 
     if pending_videos:
         ydl_opts = {
-            "paths": {"home": "videos"}
+            "paths": {"home": "videos"},
+            "writethumbnail": True,
+            "writeinfojson": True
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             error_code = ydl.download(pending_videos)
 
         if error_code:
             print("Some Video Failed to download")
+            return 400
         else:
             # Agregar tema de cambiar el status en la base etc y feedback al usuario
             print("All videos successfully downloaded")
+            return 200
 
     if pending_audio:
         ydl_opts = {
-            "paths": {"home": "music"},'extract_audio': True, 'format': 'bestaudio', 'outtmpl': '%(title)s.mp3'
+            "paths": {"home": "music"},
+            'extract_audio': True,
+            'format': 'bestaudio',
+            'outtmpl': '%(title)s.mp3',
+            "writethumbnail": True,
+            "writeinfojson": True
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             error_code = ydl.download(pending_audio)

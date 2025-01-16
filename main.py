@@ -44,27 +44,40 @@ def add_url():
 
 @app.route("/pending")
 def pending():
-    pending_urls = db.session.execute(db.select(Url)).scalars()
+    pending_urls = list(db.session.execute(db.select(Url).where(Url.status == 0)).scalars())
     return render_template("pending.html", pending_urls=pending_urls)
 
 @app.route("/delete/<id>")
 def delete(id):
     print(id)
+    url = Url.query.get(id)
+    db.session.delete(url)
+    db.session.commit()
     return redirect("/pending")
 
 @app.route("/download_all")
 def download_all():
-    pending_urls = db.session.execute(db.select(Url)).scalars()
+    pending_urls = list(db.session.execute(db.select(Url).where(Url.status == 0)).scalars())
     url_list = []
 
     for url in pending_urls:
+        print(f"URL! {url.status}")
         url_list.append(
             {
                 "url" : url.url,
                 "format" : url.format
             })
 
-    download_pending(url_list)
+    download_status = download_pending(url_list)
+    print(f"Download Status! {download_status}")
+    if download_status == 200:
+        print(pending_urls)
+        for url in pending_urls:
+            print(f"Status {url.status}")
+            url.status = True
+        db.session.commit()
+
+
     return redirect("/pending")
 
 @app.route("/download/<id>")
