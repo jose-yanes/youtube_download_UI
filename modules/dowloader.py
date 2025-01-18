@@ -5,10 +5,6 @@ import yt_dlp
 
 def download_pending(pending_list):
 
-    '''
-    CONFIRMAR QUE ESTA ENVIANDO UNA LISTA
-    '''
-
     pending_videos = []
     pending_audio = []
 
@@ -28,9 +24,11 @@ def download_pending(pending_list):
 
     if pending_videos:
         ydl_opts = {
-            "paths": {"home": "videos"},
-            "writethumbnail": True,
-            "writeinfojson": True
+            'paths': {"home": "videos"},
+            'writethumbnail': True,
+            'writeinfojson': True,
+            'embed-metadata': True,
+            'embed-thumbnail': True
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             error_code = ydl.download(pending_videos)
@@ -49,17 +47,24 @@ def download_pending(pending_list):
             'extract_audio': True,
             'format': 'bestaudio',
             'outtmpl': '%(title)s.mp3',
-            "writethumbnail": True,
-            "writeinfojson": True
+            'writethumbnail': True,
+            'writeinfojson': True,
+            'embed-metadata': True,
+            'embed-thumbnail': True
         }
+
+
+        
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             error_code = ydl.download(pending_audio)
 
         if error_code:
-            print("Some Video Failed to download")
+            print("Some Audio Failed to download")
+            return 400
         else:
             # Agregar tema de cambiar el status en la base etc y feedback al usuario
-            print("All videos successfully downloaded")
+            print("All Audio successfully downloaded")
+            return 200
 
 # def download_audio(link):
 #   with yt_dlp.YoutubeDL({'extract_audio': True, 'format': 'bestaudio', 'outtmpl': '%(title)s.mp3'}) as video:
@@ -70,3 +75,8 @@ def download_pending(pending_list):
 #     print("Successfully Downloaded - see local folder on Google Colab")
 #
 # download_audio('https://www.youtube.com/watch?v=cJuO985zF8E')
+
+def get_info(link):
+    with yt_dlp.YoutubeDL() as video:
+        info_video = video.extract_info( link, download = False )
+        return info_video
