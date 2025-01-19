@@ -29,7 +29,6 @@ def download_pending(pending_list):
         ydl_opts = {
             'paths': {"home": "videos"},
             'writethumbnail': True,
-            'writeinfojson': True,
             'writethumbnail': True,
             'embed-thumbnail': True,
             'postprocessors': [
