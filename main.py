@@ -22,7 +22,6 @@ class Url(db.Model):
     channel: Mapped[str] = mapped_column(String(150), unique=False, nullable=True)
     format: Mapped[str] = mapped_column(String(5), unique=False, nullable=False)
     status: Mapped[bool] = mapped_column(Boolean(), nullable=True, default=False)
-    date_completed: Mapped[Date] = mapped_column(Date(), nullable=True)
 
 with app.app_context():
     db.create_all()
@@ -35,7 +34,6 @@ def home():
 def add_url():
     url_data = request.form["url"]
     url_format = request.form["format"]
-
     new_url = Url(url=url_data, format=url_format)
 
     db.session.add(new_url)
@@ -48,11 +46,9 @@ def pending():
     pending_urls = list(db.session.execute(db.select(Url).where(Url.status == 0)).scalars())
 
     for url in pending_urls:
-        print(f"URL TITLE: {url.title}")
-        if url.title == None or url.channel == None:
+        if url.title == None:
             url_title = get_info(url.url)
             url.title = url_title["title"]
-            url.channel = url_title["channel"]
             db.session.commit()
 
     return render_template("pending.html", pending_urls=pending_urls)
@@ -75,11 +71,11 @@ def download_all():
         url_list.append(
             {
                 "url" : url.url,
-                "format" : url.format
+                "format" : url.format,
             })
 
     download_status = download_pending(url_list)
-    print(f"Download Status! {download_status}")
+
     if download_status == 200:
         print(pending_urls)
         for url in pending_urls:

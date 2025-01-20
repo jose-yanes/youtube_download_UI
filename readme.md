@@ -1,0 +1,5 @@
+Requirements
+
+Flask
+youtube_dlp
+flask_sqlalchemy

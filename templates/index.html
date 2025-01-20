@@ -16,6 +16,8 @@
                 <option value="video">Video</option>
                 <option value="audio">Audio</option>
             </select>
+            <label for="is_playlist">Playlist?</label>
+            <input type="checkbox" name="is_playlist" value="True">
             <button type="submit" class="url">Submit!</button>
         </form>
         <a href={{ url_for('pending') }}>

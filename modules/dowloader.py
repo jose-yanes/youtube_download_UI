@@ -10,19 +10,11 @@ def download_pending(pending_list):
     pending_videos = []
     pending_audio = []
 
-    print(f"Pending List: {pending_list}")
-
     for url in pending_list:
-        print(f"URL: {url}")
         if url["format"] == "video":
             pending_videos.append(url["url"])
         elif url["format"] == "audio":
             pending_audio.append(url["url"])
-
-    print(f"Videos: {pending_videos}")
-    print(f"Audio: {pending_audio}")
-
-
 
     if pending_videos:
 
@@ -31,6 +23,7 @@ def download_pending(pending_list):
             'writethumbnail': True,
             'writethumbnail': True,
             'embed-thumbnail': True,
+            'outtmpl': '%(playlist_index)02d-%(title)s.%(ext)s',
             'postprocessors': [
                 {'key': 'FFmpegMetadata', 'add_metadata': True,
                 },
@@ -57,6 +50,7 @@ def download_pending(pending_list):
             'format': 'mp3/bestaudio/best',
             'writethumbnail': True,
             'embed-thumbnail': True,
+            'outtmpl': '%(playlist_index)02d-%(title)s.%(ext)s',
             'postprocessors': [
                 {'key': 'FFmpegExtractAudio', 'preferredcodec': 'mp3'},
                 {'key': 'EmbedThumbnail', 'already_have_thumbnail': False},
