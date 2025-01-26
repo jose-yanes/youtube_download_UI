@@ -22,6 +22,7 @@ class Url(db.Model):
     channel: Mapped[str] = mapped_column(String(150), unique=False, nullable=True)
     format: Mapped[str] = mapped_column(String(5), unique=False, nullable=False)
     status: Mapped[bool] = mapped_column(Boolean(), nullable=True, default=False)
+    is_playlist: Mapped[bool] = mapped_column(Boolean(), nullable=True, default=False)
 
 with app.app_context():
     db.create_all()
@@ -34,7 +35,11 @@ def home():
 def add_url():
     url_data = request.form["url"]
     url_format = request.form["format"]
-    new_url = Url(url=url_data, format=url_format)
+    if "is_playlist" in request.form:
+        url_playlist = True
+    else:
+        url_playlist = False
+    new_url = Url(url=url_data, format=url_format, is_playlist=url_playlist)
 
     db.session.add(new_url)
     db.session.commit()
@@ -88,9 +93,12 @@ def download_all():
 @app.route("/download/<id>")
 def download_id(id):
     pending_url = list(db.session.execute(db.select(Url).where(Url.status == 0).where(Url.id == id)).scalars())
+    print(f"Pending URL {pending_url[0].url}")
     formatted_url = [{
         "url" : pending_url[0].url,
-        "format" : pending_url[0].format
+        "format" : pending_url[0].format,
+        "is_playlist" : pending_url[0].is_playlist,
+        "title" : pending_url[0].title
     }]
 
     download_status = download_pending(formatted_url)
