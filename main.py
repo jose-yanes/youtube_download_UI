@@ -35,16 +35,24 @@ def home():
 def add_url():
     url_data = request.form["url"]
     url_format = request.form["format"]
-    if "is_playlist" in request.form:
-        url_playlist = True
+
+    url_exists = list(db.session.execute(db.select(Url).where(Url.url == url_data)).scalars())
+
+    if url_exists and url_exists[0].format == url_format:
+        print("SAME URL AND FORMAT")
+        return redirect("/")
     else:
-        url_playlist = False
-    new_url = Url(url=url_data, format=url_format, is_playlist=url_playlist)
+        
+        if "is_playlist" in request.form:
+            url_playlist = True
+        else:
+            url_playlist = False
+        new_url = Url(url=url_data, format=url_format, is_playlist=url_playlist)
 
-    db.session.add(new_url)
-    db.session.commit()
+        db.session.add(new_url)
+        db.session.commit()
 
-    return redirect("/")
+        return redirect("/")
 
 @app.route("/pending")
 def pending():
