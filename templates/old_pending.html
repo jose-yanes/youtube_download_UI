@@ -1,7 +1,14 @@
-{% extends "base.html" %}
-{% block title %}Pending Downloads{%endblock%}
-{% block content %}
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="shortcut icon" type="image/jpg" href="/images/racoon.jpg">
+    <title>Pending Links</title>
+</head>
+<body>
+
         <h1>Pending Links</h1>
         <a href={{ url_for('download_all') }}>Download ALL now!</a>
         <ul>
@@ -16,5 +23,5 @@
         </ul>
 
 
-
-{% endblock %}
+</body>
+</html>
