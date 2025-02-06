@@ -85,6 +85,8 @@ def download_all():
             {
                 "url" : url.url,
                 "format" : url.format,
+                "is_playlist" : url.is_playlist,
+                "title" : url.title
             })
 
     download_status = download_pending(url_list)
