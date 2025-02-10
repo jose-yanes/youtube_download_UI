@@ -2,7 +2,7 @@ import json
 import yt_dlp
 import os
 from yt_dlp.postprocessor import FFmpegPostProcessor
-FFmpegPostProcessor._ffmpeg_location.set(r'../ffmpegytdlp/')
+#FFmpegPostProcessor._ffmpeg_location.set(r'../ffmpegytdlp/')
 
 
 def download_pending(pending_list):

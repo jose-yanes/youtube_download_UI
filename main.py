@@ -116,8 +116,8 @@ def download_id(id):
     if download_status == 200:
         pending_url[0].status = True
         db.session.commit()
-
     return redirect("/pending")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
