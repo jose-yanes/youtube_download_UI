@@ -13,9 +13,19 @@
             <input type="checkbox" name="is_playlist" value="True">
             <button type="submit" class="url">Submit!</button>
         </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="modal">
+                        <button class="close-modal">&times;</button>
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         <a href={{ url_for('pending') }}>
             <p>Pending Downloads</p>
         </a>
     </div>
-<
+    <script src="/scripts/index.js"></script>
 {% endblock %}

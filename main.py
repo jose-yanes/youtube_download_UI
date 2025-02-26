@@ -1,11 +1,16 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Date, Boolean
+from sqlalchemy import Integer, String, Boolean
 from modules.dowloader import download_pending, get_info
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///downloader.db"
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 class Base(DeclarativeBase):
@@ -47,7 +52,7 @@ def add_url():
     )
 
     if url_exists and url_exists[0].format == url_format and url_exists[0].status == 0:
-        print("SAME URL AND FORMAT")
+        flash("The URL is already on the pending list :)")
         return redirect("/")
     else:
         if "is_playlist" in request.form:
@@ -94,7 +99,6 @@ def download_all():
     url_list = []
 
     for url in pending_urls:
-        print(f"URL! {url.status}")
         url_list.append(
             {
                 "url": url.url,
@@ -122,7 +126,6 @@ def download_id(id):
             db.select(Url).where(Url.status == 0).where(Url.id == id)
         ).scalars()
     )
-    print(f"Pending URL {pending_url[0].url}")
     formatted_url = [
         {
             "url": pending_url[0].url,
