@@ -5,10 +5,12 @@ from sqlalchemy import Integer, String, Boolean
 from modules.dowloader import download_pending, get_info
 from dotenv import load_dotenv
 import os
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__, static_folder="static", static_url_path="/")
+CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///downloader.db"
 app.secret_key = os.getenv("SECRET_KEY")
 
@@ -40,6 +42,12 @@ with app.app_context():
 @app.route("/")
 def home():
     return render_template("index.html")
+
+
+@app.route("/test", methods=["POST"])
+def test():
+    print(request.data)
+    return {"msg": "test accepted"}
 
 
 @app.route("/add_url", methods=["POST"])
